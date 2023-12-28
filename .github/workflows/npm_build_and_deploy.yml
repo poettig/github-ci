@@ -7,24 +7,31 @@ on:
         required: true
     inputs:
       branch:
+        type: string
         required: true
         description: The branch to build and deploy.
       node_version:
-        default: "20"
+        type: number
+        default: 20
         description: The node version to build with. Defaults to 20.
       npm_build_script:
+        type: string
         default: build
         description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
       build_env:
+        type: string
         required: true
         description: Environment variables passed to the build script as a JSON string.
       target_host:
+        type: string
         required: true
         description: The hostname of the target server.
       target_user:
+        type: string
         required: true
         description: The user to connect to the target server with.
       restart_service:
+        type: string
         description: A service or space-separated list of services to restart after sucessful deploy.
 
 concurrency:

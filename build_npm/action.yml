@@ -13,7 +13,7 @@ inputs:
     description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
   build_env:
     required: true
-    description: Environment variables passed to the build script.
+    description: Environment variables passed to the build script as a JSON string.
 
 runs:
   using: "composite"

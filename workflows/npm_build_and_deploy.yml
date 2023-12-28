@@ -1,8 +1,14 @@
-name: Build an npm project and deploy to a server (only if the branch is "main" or "development
+name: Build an npm project and deploy to a server (only if the branch is "main" or "development")
 
 on:
   workflow_call:
+    secrets:
+      DEPLOY_SSH_KEY:
+        required: true
     inputs:
+      branch:
+        required: true
+        description: The branch to build and deploy.
       node_version:
         default: "20"
         description: The node version to build with. Defaults to 20.
@@ -11,7 +17,7 @@ on:
         description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
       build_env:
         required: true
-        description: Environment variables passed to the build script.
+        description: Environment variables passed to the build script as a JSON string.
       target_host:
         required: true
         description: The hostname of the target server.
@@ -33,6 +39,7 @@ jobs:
       - name: Build npm project ${{ github.repository }}
         uses: poettig/github-ci/build_npm@main
         with:
+          branch: ${{ inputs.branch }}
           node_version: ${{ inputs.node_version }}
           npm_build_script: ${{ inputs.npm_build_script }}
           build_env: ${{ inputs.build_env }}
@@ -45,6 +52,7 @@ jobs:
       - name: Deploy npm project ${{ github.repository }}
         uses: poettig/github-ci/deploy_npm@main
         with:
+          branch: ${{ inputs.branch }}
           target_host: ${{ inputs.target_host }}
           target_user: ${{ inputs.target_user }}
           target_directory: "${{ github.ref_name == 'main' && '/prod' || '/staging' }}"

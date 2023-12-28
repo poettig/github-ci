@@ -33,4 +33,4 @@ runs:
         npm ci --omit=dev
         npm run ${{ inputs.npm_build_script }}
       shell: bash
-      env: ${{ input.build_env != '' && fromJSON(inputs.build_env) }}
+      env: ${{ inputs.build_env != '' && fromJSON(inputs.build_env) }}

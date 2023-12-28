@@ -24,6 +24,8 @@ on:
       target_user:
         required: true
         description: The user to connect to the target server with.
+      restart_service:
+        description: A service or space-separated list of services to restart after sucessful deploy.
 
 concurrency:
   group: ci-${{ github.ref_name }}
@@ -35,7 +37,8 @@ jobs:
     steps:
       - name: Checkout repository to get templates
         uses: actions/checkout@v4
-        
+
+      # As action for clean definition and reusability
       - name: Build ${{ github.repository }}
         uses: poettig/github-ci/build_npm@main
         with:
@@ -43,16 +46,21 @@ jobs:
           node_version: ${{ inputs.node_version }}
           npm_build_script: ${{ inputs.npm_build_script }}
           build_env: ${{ inputs.build_env }}
-          
-  deploy:
-    if: "${{ github.ref_name == 'main' || github.ref_name == 'development' }}"
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+
+      # As action to only need the if condition once
       - name: Deploy ${{ github.repository }}
+        if: "${{ github.ref_name == 'main' || github.ref_name == 'development' }}"
         uses: poettig/github-ci/deploy_npm@main
         with:
           branch: ${{ inputs.branch }}
           target_host: ${{ inputs.target_host }}
           target_user: ${{ inputs.target_user }}
           target_directory: "${{ github.ref_name == 'main' && '/prod' || '/staging' }}"
+
+      - name: Restart ${{ inputs.restart_service }}
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ inputs.target_host }}
+          username: ${{ inputs.target_user }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: sudo systemctl restart ${{ inputs.restart_service }}

@@ -12,7 +12,6 @@ inputs:
     default: build
     description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
   build_env:
-    default: '{}'
     description: Environment variables passed to the build script as a JSON string.
 
 runs:
@@ -34,11 +33,4 @@ runs:
         npm ci --omit=dev
         npm run ${{ inputs.npm_build_script }}
       shell: bash
-      env: ${{ fromJSON(inputs.build_env) }}
-
-    - name: Upload build result as artifact
-      uses: actions/upload-artifact@v3
-      if: "${{ inputs.branch == 'main' || inputs.branch == 'development' }}"
-      with:
-        name: dist-${{ inputs.branch }}
-        path: dist
+      env: ${{ input.build_env != '' && fromJSON(inputs.build_env) }}

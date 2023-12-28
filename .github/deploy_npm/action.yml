@@ -21,12 +21,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download build result artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: dist-${{ inputs.branch }}
-        path: dist 
-      
     - name: Deploy build result
       uses: easingthemes/ssh-deploy@v4.1.8
       with:

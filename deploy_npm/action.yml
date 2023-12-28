@@ -13,7 +13,10 @@ inputs:
     description: The user to connect to the target server with.
   target_directory:
     required: true
-    description: The directory to deploy to on the target server. Remember that you need tu use "/" if the deploy ssh key is restricted with `rrsync`.
+    description: The directory to deploy to on the target server. Remember that you need to use "/" if the deploy ssh key is restricted with `rrsync`.
+  ssh_key:
+    required: true
+    description: The private key to use for ssh key authentication.
   rsync_args:
     default: "--delete -rvzci"
     description: The arguments for rsync. Defaults to `--delete -rvzci`.
@@ -24,7 +27,7 @@ runs:
     - name: Deploy build result
       uses: easingthemes/ssh-deploy@v4.1.8
       with:
-        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        SSH_PRIVATE_KEY: ${{ inputs.ssh_key }}
         REMOTE_HOST: ${{ inputs.target_host }}
         REMOTE_USER: ${{ inputs.target_user }}
         SOURCE: dist/

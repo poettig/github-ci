@@ -11,8 +11,8 @@ on:
         required: true
         description: The branch to build and deploy.
       node_version:
-        type: number
-        default: 20
+        type: string
+        default: "18"
         description: The node version to build with. Defaults to 20.
       npm_build_script:
         type: string

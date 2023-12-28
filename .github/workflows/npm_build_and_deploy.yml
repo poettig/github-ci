@@ -47,9 +47,9 @@ jobs:
 
       - name: Check if required variables exist
         run: |
-          [ -n ${{ inputs.target_host || vars.NODE_VERSION }} ] || { echo "Both node_version action input variable and NODE_VERSION project CI variable is undefined"; exit 1 } 
-          [ -n ${{ inputs.target_host || vars.DEPLOY_HOST }} ] || { echo "Both target_host action input variable and DEPLOY_HOST project CI variable is undefined"; exit 1 } 
-          [ -n ${{ inputs.target_user || vars.DEPLOY_USER }} ] || { echo "Both target_user action input variable and DEPLOY_USER project CI variable is undefined"; exit 1 } 
+          [ -n ${{ inputs.target_host || vars.NODE_VERSION }} ] || { echo "Both node_version action input variable and NODE_VERSION project CI variable is undefined"; exit 1; } 
+          [ -n ${{ inputs.target_host || vars.DEPLOY_HOST }} ] || { echo "Both target_host action input variable and DEPLOY_HOST project CI variable is undefined"; exit 1; } 
+          [ -n ${{ inputs.target_user || vars.DEPLOY_USER }} ] || { echo "Both target_user action input variable and DEPLOY_USER project CI variable is undefined"; exit 1; } 
 
       # As action for clean definition and reusability
       - name: Build ${{ github.repository }}

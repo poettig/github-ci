@@ -30,6 +30,10 @@ on:
         type: string
         required: true
         description: The user to connect to the target server with.
+      target_base_directory:
+        type: string
+        default: ""
+        description: The base directory to deploy to. The main branch will deploy to <target_base_directory>/prod, the development branch to <target_base_directory>/staging. The default is and empty string. Must not end with "/". If it does, there will most likely be errors.
       restart_service:
         type: string
         description: A service or space-separated list of services to restart after sucessful deploy.
@@ -62,7 +66,7 @@ jobs:
           branch: ${{ inputs.branch }}
           target_host: ${{ inputs.target_host }}
           target_user: ${{ inputs.target_user }}
-          target_directory: "${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
+          target_directory: "inputs.target_base_directory + ${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       - name: Restart ${{ inputs.restart_service }}

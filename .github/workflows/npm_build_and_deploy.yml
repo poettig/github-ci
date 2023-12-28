@@ -65,7 +65,7 @@ jobs:
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       - name: Restart ${{ inputs.restart_service }}
-        uses: appleboy/ssh-action@v0.1.10
+        uses: appleboy/ssh-action@v1.0.1
         with:
           host: ${{ inputs.target_host }}
           username: ${{ inputs.target_user }}

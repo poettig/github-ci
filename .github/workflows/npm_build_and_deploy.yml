@@ -62,6 +62,7 @@ jobs:
           target_host: ${{ inputs.target_host }}
           target_user: ${{ inputs.target_user }}
           target_directory: "${{ github.ref_name == 'main' && '/prod' || '/staging' }}"
+          ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       - name: Restart ${{ inputs.restart_service }}
         uses: appleboy/ssh-action@v0.1.10

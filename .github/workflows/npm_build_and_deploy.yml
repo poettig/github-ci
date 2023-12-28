@@ -62,7 +62,7 @@ jobs:
           branch: ${{ inputs.branch }}
           target_host: ${{ inputs.target_host || vars.DEPLOY_HOST }}
           target_user: ${{ inputs.target_user || vars.DEPLOY_USER }}
-          target_directory: "${{ vars.target_base_directory || vars.DEPLOY_BASE_DIRECTORY }} + ${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
+          target_directory: "${{ vars.target_base_directory || vars.DEPLOY_BASE_DIRECTORY || '' }}${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       - name: Restart ${{ inputs.restart_service }}

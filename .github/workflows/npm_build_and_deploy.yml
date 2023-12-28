@@ -36,7 +36,7 @@ jobs:
       - name: Checkout repository to get templates
         uses: actions/checkout@v4
         
-      - name: Build npm project ${{ github.repository }}
+      - name: Build ${{ github.repository }}
         uses: poettig/github-ci/build_npm@main
         with:
           branch: ${{ inputs.branch }}
@@ -49,7 +49,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy npm project ${{ github.repository }}
+      - name: Deploy ${{ github.repository }}
         uses: poettig/github-ci/deploy_npm@main
         with:
           branch: ${{ inputs.branch }}

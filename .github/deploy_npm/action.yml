@@ -14,6 +14,9 @@ inputs:
   target_directory:
     required: true
     description: The directory to deploy to on the target server. Remember that you need tu use "/" if the deploy ssh key is restricted with `rrsync`.
+  rsync_args:
+    default: "--delete -rvzci"
+    description: The arguments for rsync. Defaults to `--delete -rvzci`.
 
 runs:
   using: "composite"
@@ -32,4 +35,4 @@ runs:
         REMOTE_USER: ${{ inputs.target_user }}
         SOURCE: dist/
         TARGET: ${{ inputs.target_directory }}
-        ARGS: "--delete -rvzci"
+        ARGS: ${{ inputs.rsync_args }}

@@ -4,16 +4,13 @@ Shared CI pipelines
 ### Push workflow
 
 You can additionally define `npm_build_script` in the `with` inputs if the build script differs from the name `build`.
+`build-env` can be left out if there are no enviroment variables needed.
 
 ```yaml
-name: Build and deploy npm project on push
+name: Build and deploy on push
 
 on:
   push:
-
-concurrency:
-  group: ci-${{ github.ref_name }}
-  cancel-in-progress: true
 
 jobs:
   on_push:
@@ -34,7 +31,7 @@ More variables can be defined via the matrix, but it will create a cross product
 You can additionally define `npm_build_script` in the `with` inputs if the build script differs from the name `build`.
 
 ```yaml
-name: Build website and deploy on webhook
+name: Build and deploy on webhook
 
 on:
   repository_dispatch:

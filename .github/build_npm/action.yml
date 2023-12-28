@@ -12,7 +12,7 @@ inputs:
     default: build
     description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
   build_env:
-    required: true
+    default: '{}'
     description: Environment variables passed to the build script as a JSON string.
 
 runs:
@@ -29,7 +29,7 @@ runs:
         node-version: ${{ inputs.node_version }}.x
         cache: npm
 
-    - name: Build npm project ${{ inputs.branch }}
+    - name: Build ${{ inputs.branch }}
       run: |
         npm ci --omit=dev
         npm run ${{ inputs.npm_build_script }}

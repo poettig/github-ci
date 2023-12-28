@@ -1,0 +1,50 @@
+name: Build an npm project and deploy to a server (only if the branch is "main" or "development
+
+on:
+  workflow_call:
+    inputs:
+      node_version:
+        default: "20"
+        description: The node version to build with. Defaults to 20.
+      npm_build_script:
+        default: build
+        description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
+      build_env:
+        required: true
+        description: Environment variables passed to the build script.
+      target_host:
+        required: true
+        description: The hostname of the target server.
+      target_user:
+        required: true
+        description: The user to connect to the target server with.
+
+concurrency:
+  group: ci-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository to get templates
+        uses: actions/checkout@v4
+        
+      - name: Build npm project ${{ github.repository }}
+        uses: poettig/github-ci/build_npm@main
+        with:
+          node_version: ${{ inputs.node_version }}
+          npm_build_script: ${{ inputs.npm_build_script }}
+          build_env: ${{ inputs.build_env }}
+          
+  deploy:
+    if: "${{ github.ref_name == 'main' || github.ref_name == 'development' }}"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy npm project ${{ github.repository }}
+        uses: poettig/github-ci/deploy_npm@main
+        with:
+          target_host: ${{ inputs.target_host }}
+          target_user: ${{ inputs.target_user }}
+          target_directory: "${{ github.ref_name == 'main' && '/prod' || '/staging' }}"

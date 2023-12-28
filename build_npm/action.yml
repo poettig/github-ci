@@ -1,0 +1,44 @@
+name: Build npm project
+description: Builds an npm project given branch and strapi token. Creates an artifact containing the build result.
+
+inputs:
+  branch:
+    required: true
+    description: The branch to build.
+  node_version:
+    default: "20"
+    description: The node version to build with. Defaults to 20.
+  npm_build_script:
+    default: build
+    description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
+  build_env:
+    required: true
+    description: Environment variables passed to the build script.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository ${{ inputs.branch }}
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.branch }}
+
+    - name: Use Node.js ${{ inputs.node_version }}.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node_version }}.x
+        cache: npm
+
+    - name: Build npm project ${{ inputs.branch }}
+      run: |
+        npm ci --omit=dev
+        npm run ${{ inputs.npm_build_script }}
+      shell: bash
+      env: ${{ fromJSON(inputs.build_env) }}
+
+    - name: Upload build result as artifact
+      uses: actions/upload-artifact@v3
+      if: "${{ inputs.branch == 'main' || inputs.branch == 'development' }}"
+      with:
+        name: dist-${{ inputs.branch }}
+        path: dist

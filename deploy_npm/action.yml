@@ -1,0 +1,35 @@
+name: Deploy npm project
+description: Load a previously created build artifact for the current branch and deploy it to a given server using rsync with ssh key authentication given via the DEPLOY_SSH_KEY secret.
+
+inputs:
+  branch:
+    required: true
+    description: The branch to deploy.
+  target_host:
+    required: true
+    description: The hostname of the target server.
+  target_user:
+    required: true
+    description: The user to connect to the target server with.
+  target_directory:
+    required: true
+    description: The directory to deploy to on the target server. Remember that you need tu use "/" if the deploy ssh key is restricted with `rrsync`.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download build result artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-${{ inputs.branch }}
+        path: dist 
+      
+    - name: Deploy build result
+      uses: easingthemes/ssh-deploy@v4.1.8
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        REMOTE_HOST: ${{ inputs.target_host }}
+        REMOTE_USER: ${{ inputs.target_user }}
+        SOURCE: dist/
+        TARGET: ${{ inputs.target_directory }}
+        ARGS: "--delete -rvzci"

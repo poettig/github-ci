@@ -34,7 +34,7 @@ on:
         description: A service or space-separated list of services to restart after sucessful deploy.
 
 concurrency:
-  group: ci-${{ github.ref_name }}
+  group: ci-${{ inputs.branch }}
   cancel-in-progress: true
 
 jobs:
@@ -55,13 +55,13 @@ jobs:
 
       # As action to only need the if condition once
       - name: Deploy ${{ github.repository }}
-        if: "${{ github.ref_name == 'main' || github.ref_name == 'development' }}"
+        if: "${{ inputs.branch == 'main' || inputs.branch == 'development' }}"
         uses: poettig/github-ci/deploy_npm@main
         with:
           branch: ${{ inputs.branch }}
           target_host: ${{ inputs.target_host }}
           target_user: ${{ inputs.target_user }}
-          target_directory: "${{ github.ref_name == 'main' && '/prod' || '/staging' }}"
+          target_directory: "${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       - name: Restart ${{ inputs.restart_service }}

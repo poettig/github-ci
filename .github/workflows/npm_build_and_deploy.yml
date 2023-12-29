@@ -3,7 +3,7 @@ name: Build an npm project and deploy to a server (only if the branch is "main" 
 # Inputs from project variables
 # vars.TARGET_HOST{_PROD,STAGING}: The hostname of the target server.
 # vars.TARGET_USER{_PROD,STAGING}: The user to use for connection to the target server.
-# vars.TARGET_BASE_DIRECTORY{_PROD,STAGING}: The base directory to deploy to. The main branch will deploy to <TARGET_BASE_DIRECTORY>/prod, the development branch to <TARGET_BASE_DIRECTORY>/staging. The default is an empty string. Must not end with "/". If it does, there will most likely be errors.
+# vars.TARGET_DIRECTORY{_PROD,STAGING}: The base directory to deploy to. The main branch will deploy to <TARGET_BASE_DIRECTORY>/prod, the development branch to <TARGET_BASE_DIRECTORY>/staging. The default is an empty string. Must not end with "/". If it does, there will most likely be errors.
 # vars.RESTART_SERVICES{_PROD,STAGING}: A service or space-separated list of services to restart after sucessful deploy.
 
 on:
@@ -44,7 +44,7 @@ concurrency:
 env:
   TARGET_HOST: "${{ inputs.branch == 'main' && (vars.TARGET_HOST_PROD || vars.TARGET_HOST) || (vars.TARGET_HOST_STAGING || vars.TARGET_HOST) }}"
   TARGET_USER: "${{ inputs.branch == 'main' && (vars.TARGET_USER_PROD || vars.TARGET_USER) || (vars.TARGET_USER_STAGING || vars.TARGET_USER) }}"
-  TARGET_BASE_DIRECTORY: "${{ inputs.branch == 'main' && (vars.TARGET_BASE_DIRECTORY_PROD || vars.TARGET_BASE_DIRECTORY) || (vars.TARGET_BASE_DIRECTORY_STAGING || vars.TARGET_BASE_DIRECTORY) }}"
+  TARGET_DIRECTORY: "${{ inputs.branch == 'main' && (vars.TARGET_DIRECTORY_PROD || vars.TARGET_DIRECTORY) || (vars.TARGET_DIRECTORY_STAGING || vars.TARGET_DIRECTORY) }}"
   RESTART_SERVICES: "${{ inputs.branch == 'main' && (vars.RESTART_SERVICES_PROD || vars.RESTART_SERVICES) || (vars.RESTART_SERVICES_STAGING || vars.RESTART_SERVICES) }}"
 
 jobs:
@@ -72,7 +72,7 @@ jobs:
           source_directory: ${{ inputs.source_directory }}
           target_host: ${{ env.TARGET_HOST }}
           target_user: ${{ env.TARGET_USER }}
-          target_directory: "${{ env.TARGET_BASE_DIRECTORY}}${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
+          target_directory: ${{ env.TARGET_DIRECTORY }}
           rsync_args: ${{ inputs.rsync_args }}
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 

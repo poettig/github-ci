@@ -33,6 +33,9 @@ on:
       target_base_directory:
         type: string
         description: The base directory to deploy to. The main branch will deploy to <target_base_directory>/prod, the development branch to <target_base_directory>/staging. The default is and empty string. Must not end with "/". If it does, there will most likely be errors.
+      rsync_args:
+        type: string
+        description: The arguments for rsync. Defaults to `--delete -rvzci`.
       restart_service:
         type: string
         description: A service or space-separated list of services to restart after sucessful deploy.
@@ -73,10 +76,11 @@ jobs:
           target_host: ${{ inputs.target_host || vars.DEPLOY_HOST }}
           target_user: ${{ inputs.target_user || vars.DEPLOY_USER }}
           target_directory: "${{ vars.target_base_directory || vars.DEPLOY_BASE_DIRECTORY || '' }}${{ inputs.branch == 'main' && '/prod' || '/staging' }}"
+          rsync_args: "${{ inputs.rsync_args || vars.RSYNC_ARGS || '--delete -rvzci' }}"
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       - name: Restart ${{ inputs.restart_service }}
-        if: "${{ inputs.restart_service }}"
+        if: "${{ inputs.restart_service != '' }}"
         uses: appleboy/ssh-action@v1.0.1
         with:
           host: ${{ inputs.target_host || vars.DEPLOY_HOST }}

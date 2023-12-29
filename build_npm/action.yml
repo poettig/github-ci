@@ -18,7 +18,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout repository ${{ inputs.branch }}
+    - name: Checkout repository
       uses: actions/checkout@v4
       with:
         ref: ${{ inputs.branch }}
@@ -29,9 +29,14 @@ runs:
         node-version: ${{ inputs.node_version }}.x
         cache: npm
 
-    - name: Build ${{ inputs.branch }}
+    - name: Install node modules
       run: |
         npm ci --omit=dev
+      shell: bash
+      env: ${{ fromJSON(inputs.build_env) }}
+
+    - name: Build
+      run: |
         npm run ${{ inputs.npm_build_script }}
       shell: bash
       env: ${{ fromJSON(inputs.build_env) }}

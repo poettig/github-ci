@@ -6,7 +6,7 @@ inputs:
     required: true
     description: The branch to deploy.
   source_directory:
-    default: dist/
+    default: "dist/"
     description: The build result directory to deploy. Defaults to "dist/".
   target_host:
     required: true

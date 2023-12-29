@@ -23,5 +23,5 @@ runs:
       with:
         host: ${{ inputs.target_host }}
         username: ${{ inputs.target_user }}
-        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        key: ${{ inputs.ssh_key }}
         script: sudo systemctl restart ${{ inputs.services }}

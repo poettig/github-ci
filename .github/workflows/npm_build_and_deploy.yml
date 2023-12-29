@@ -61,7 +61,7 @@ jobs:
           branch: ${{ inputs.branch }}
           node_version: "${{ inputs.node_version || vars.NODE_VERSION }}"
           npm_build_script: ${{ inputs.npm_build_script }}
-          build_env: ${{ inputs.build_env }}
+          build_env: ${{ inputs.build_env || vars.BUILD_ENV }}
 
       # As action to only need the if condition once
       - name: Deploy ${{ github.repository }}

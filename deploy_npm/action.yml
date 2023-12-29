@@ -5,6 +5,9 @@ inputs:
   branch:
     required: true
     description: The branch to deploy.
+  source_directory:
+    default: dist/
+    description: The build result directory to deploy. Defaults to "dist/".
   target_host:
     required: true
     description: The hostname of the target server.
@@ -30,6 +33,6 @@ runs:
         SSH_PRIVATE_KEY: ${{ inputs.ssh_key }}
         REMOTE_HOST: ${{ inputs.target_host }}
         REMOTE_USER: ${{ inputs.target_user }}
-        SOURCE: dist/
+        SOURCE: ${{ inputs.source_directory }}
         TARGET: ${{ inputs.target_directory }}
         ARGS: ${{ inputs.rsync_args }}

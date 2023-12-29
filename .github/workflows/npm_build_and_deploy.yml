@@ -21,6 +21,8 @@ on:
         type: string
         default: '{}'
         description: Environment variables passed to the build script as a JSON string.
+      source_directory:
+        description: The build result directory to deploy. Defaults to "dist/".
       target_host:
         type: string
         description: The hostname of the target server.
@@ -66,6 +68,7 @@ jobs:
         uses: poettig/github-ci/deploy_npm@main
         with:
           branch: ${{ inputs.branch }}
+          source_directory: ${{ inputs.source_directory || vars.DEPLOY_SOURCE_DIRECTORY || 'dist/' }}
           target_host: ${{ inputs.target_host || vars.DEPLOY_HOST }}
           target_user: ${{ inputs.target_user || vars.DEPLOY_USER }}
           target_directory: "${{ vars.target_base_directory || vars.DEPLOY_BASE_DIRECTORY || '' }}${{ inputs.branch == 'main' && '/prod' || '/staging' }}"

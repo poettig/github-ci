@@ -1,0 +1,27 @@
+name: Restart systemd services
+description: Restarts given systemd services via SSH with ssh key authentication.
+
+inputs:
+  services:
+    required: true
+    description: The services (space separated) to restart.
+  target_host:
+    required: true
+    description: The hostname of the target server.
+  target_user:
+    required: true
+    description: The user to connect to the target server with.
+  ssh_key:
+    required: true
+    description: The private key to use for ssh key authentication.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Restart services ${{ inputs.services }}
+      uses: appleboy/ssh-action@v1.0.1
+      with:
+        host: ${{ inputs.target_host }}
+        username: ${{ inputs.target_user }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        script: sudo systemctl restart ${{ inputs.services }}

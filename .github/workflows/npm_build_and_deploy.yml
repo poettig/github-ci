@@ -22,6 +22,7 @@ on:
         default: '{}'
         description: Environment variables passed to the build script as a JSON string.
       source_directory:
+        type: string
         description: The build result directory to deploy. Defaults to "dist/".
       target_host:
         type: string

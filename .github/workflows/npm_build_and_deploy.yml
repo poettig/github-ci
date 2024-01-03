@@ -76,7 +76,7 @@ jobs:
           rsync_args: ${{ inputs.rsync_args }}
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
-      - name: "Restart services ${{ env.RESTART_SERVICES }}"
+      - name: Restart services ${{ env.RESTART_SERVICES }}
         if: "${{ inputs.branch == 'main' || inputs.branch == 'development' }}"
         uses: poettig/github-ci/restart_services@main
         with:

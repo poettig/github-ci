@@ -8,5 +8,5 @@ jobs:
     secrets:
       DEPLOY_SSH_KEY: "This is just a test, you won't deploy anything."
     with:
-      branch: main
+      branch: ${{ github.ref_name }}
       node_version: 20

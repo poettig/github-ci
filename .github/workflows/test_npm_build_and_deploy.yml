@@ -10,3 +10,6 @@ jobs:
     with:
       branch: ${{ github.ref_name }}
       node_version: 20
+      build_env: |-
+        STAGING:${{ github.ref_name != 'main' }}
+        !SECRET:testsecret

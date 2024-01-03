@@ -61,13 +61,15 @@ jobs:
             echo "adsfafa $input"
           done <<< "${{ inputs.build_env }}"
           
+          d="$(date +%s)"
+          
           echo "TEST_ENV=hallo" >> "$GITHUB_ENV"
           echo "MASKED_TEST_ENV=hallotest" >> "$GITHUB_ENV"
-          echo "MASKED_DYN_TEST_ENV=$(date +%s)" >> "$GITHUB_ENV"
+          echo "MASKED_DYN_TEST_ENV=$d" >> "$GITHUB_ENV"
           
           echo "::add-mask::thisvalueismasked"
-          echo "::add-mask::$MASKED_TEST_ENV"
-          echo "::add-mask::$MASKED_DYN_TEST_ENV"
+          echo "::add-mask::hallotest"
+          echo "::add-mask::$d"
 
       - name: Test print
         shell: bash

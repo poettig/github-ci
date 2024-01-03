@@ -5,6 +5,8 @@ on: workflow_dispatch
 jobs:
   test:
     uses: poettig/github-ci/.github/workflows/npm_build_and_deploy.yml@main
+    secrets:
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
     with:
       branch: main
       node_version: 20

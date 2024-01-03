@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           while read -r input; do
-            echo $input
+            echo "adsfafa $input"
           done < <(echo -ne "${{ inputs.build_env }}")
           
           echo "TEST_ENV=hallo" >> "$GITHUB_ENV"

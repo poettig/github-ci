@@ -1,10 +1,7 @@
 name: Deploy npm project
-description: Load a previously created build artifact for the current branch and deploy it to a given server using rsync with ssh key authentication given via the DEPLOY_SSH_KEY secret.
+description: Deploy a previously built npm project to a given server using rsync with ssh key authentication given via the DEPLOY_SSH_KEY secret.
 
 inputs:
-  branch:
-    required: true
-    description: The branch to deploy.
   source_directory:
     default: "dist/"
     description: The build result directory to deploy. Defaults to "dist/".

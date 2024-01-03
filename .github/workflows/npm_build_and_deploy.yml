@@ -65,7 +65,7 @@ jobs:
           echo "MASKED_TEST_ENV=hallo" >> "$GITHUB_ENV"
           
           echo "::add-mask::thisvalueismasked"
-          echo "::add-mask::$MASKED_TEST_ENV"
+          echo "::add-mask::hallo"
 
       # As action for clean definition and reusability
       - name: Build ${{ github.repository }}

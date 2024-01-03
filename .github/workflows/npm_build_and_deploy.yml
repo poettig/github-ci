@@ -58,27 +58,26 @@ jobs:
         shell: bash
         run: |
           while IFS= read -r input; do
-            echo "adsfafa $input"
+            # Split into key and value on the first :
+            key="${input%:*}
+            value="${input#*:}"
+          
+            # Should read from a secret
+            if [[ $input == +* ]]; then
+              value="${{ secrets[$value] }}"
+              echo "::add-mask::$value"
+              echo "${key#+}=$value" >> "$GITHUB_ENV"
+            # Normal key-value pair 
+            else
+              echo "$key=$value" >> "$GITHUB_ENV"
+            fi
           done <<< "${{ inputs.build_env }}"
           
-          d="$(date +%s)"
-          
-          echo "TEST_ENV=hallo" >> "$GITHUB_ENV"
-          echo "MASKED_TEST_ENV=hallotest" >> "$GITHUB_ENV"
-          echo "MASKED_DYN_TEST_ENV=$d" >> "$GITHUB_ENV"
-          
-          echo "::add-mask::thisvalueismasked"
-          echo "::add-mask::hallotest"
-          echo "::add-mask::$d"
-
       - name: Test print
         shell: bash
         run: |
-          echo thisvalueismasked
-          echo $MASKED_TEST_ENV
-          echo hallotest
-          echo $MASKED_DYN_TEST_ENV
-          
+          echo ${{ env.SECRET }} 
+
       # As action for clean definition and reusability
       - name: Build ${{ github.repository }}
         uses: poettig/github-ci/build_npm@main

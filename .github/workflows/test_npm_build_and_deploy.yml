@@ -12,4 +12,4 @@ jobs:
       node_version: 20
       build_env: |-
         STAGING:${{ github.ref_name != 'main' }}
-        !SECRET:testsecret
+        +SECRET:DEPLOY_SSH_KEY

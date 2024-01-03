@@ -12,18 +12,27 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Use Node.js ${{ inputs.node_version }}.x
-      uses: actions/setup-node@v3
+    - name: Check if node_version is an integer
+      shell: bash
+      run: |
+        # Assign to variable first, otherwise the regex check syntax breaks on empty string in inputs.node_version
+        node_version=${{ inputs.node_version }}
+        if ! [[ $node_version =~ ^[[:digit:]]+$ ]]; then
+          echo "::error::Invalid node version '${{ inputs.node_version }}'"
+          exit 1
+        fi
+
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node_version }}.x
         cache: npm
 
     - name: Install node modules
+      shell: bash
       run: |
         npm ci --omit=dev
-      shell: bash
 
     - name: Build
+      shell: bash
       run: |
         npm run ${{ inputs.npm_build_script }}
-      shell: bash

@@ -15,14 +15,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Test
-      shell: bash
-      run: |
-        echo thisvalueismasked
-        echo $MASKED_TEST_ENV
-        echo hallotest
-        echo $MASKED_DYN_TEST_ENV
-
     - name: Checkout repository
       uses: actions/checkout@v4
       with:

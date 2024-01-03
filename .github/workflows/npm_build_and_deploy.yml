@@ -64,10 +64,7 @@ jobs:
           echo "TEST_ENV=hallo" >> "$GITHUB_ENV"
           echo "MASKED_TEST_ENV=hallotest" >> "$GITHUB_ENV"
           echo "MASKED_DYN_TEST_ENV=$(date +%s)" >> "$GITHUB_ENV"
-
-      - name: Mask environment variables
-        shell: bash
-        run: |
+          
           echo "::add-mask::thisvalueismasked"
           echo "::add-mask::$MASKED_TEST_ENV"
           echo "::add-mask::$MASKED_DYN_TEST_ENV"

@@ -64,7 +64,7 @@ jobs:
           
             # Should read from a secret
             if [[ $input == +* ]]; then
-              value="${{ secrets[$value] }}"
+              value="${{ secrets[value] }}"
               echo "::add-mask::$value"
               echo "${key#+}=$value" >> "$GITHUB_ENV"
             # Normal key-value pair 

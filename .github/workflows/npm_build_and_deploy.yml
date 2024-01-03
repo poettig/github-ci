@@ -62,11 +62,24 @@ jobs:
           done
           
           echo "TEST_ENV=hallo" >> "$GITHUB_ENV"
-          echo "MASKED_TEST_ENV=hallo" >> "$GITHUB_ENV"
-          
-          echo "::add-mask::thisvalueismasked"
-          echo "::add-mask::hallo"
+          echo "MASKED_TEST_ENV=hallotest" >> "$GITHUB_ENV"
+          echo "MASKED_DYN_TEST_ENV=$(date +%s) >> "$GITHUB_ENV"
 
+      - name: Mask environment variables
+        shell: bash
+        run: |
+          echo "::add-mask::thisvalueismasked"
+          echo "::add-mask::$MASKED_TEST_ENV"
+          echo "::add-mask::$MASKED_DYN_TEST_ENV"
+
+      - name: Test print
+        shell: bash
+        run: |
+          echo thisvalueismasked
+          echo $MASKED_TEST_ENV
+          echo hallotest
+          echo $MASKED_DYN_TEST_ENV
+          
       # As action for clean definition and reusability
       - name: Build ${{ github.repository }}
         uses: poettig/github-ci/build_npm@main

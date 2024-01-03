@@ -18,9 +18,10 @@ runs:
     - name: Test
       shell: bash
       run: |
-        echo $TEST_ENV
-        echo $MASKED_TEST_ENV
         echo thisvalueismasked
+        echo $MASKED_TEST_ENV
+        echo hallotest
+        echo $MASKED_DYN_TEST_ENV
 
     - name: Checkout repository
       uses: actions/checkout@v4

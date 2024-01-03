@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           echo "${{ inputs.build_env }}"
-          for input in "${{ inputs.build_env }}"; do
+          IF='\n' for input in "${{ inputs.build_env }}"; do
             echo $input
           done
           

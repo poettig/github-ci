@@ -57,9 +57,9 @@ jobs:
       - name: Create environment
         shell: bash
         run: |
-          IFS='\n' for input in "${{ inputs.build_env }}"; do
+          while read -r input; do
             echo $input
-          done
+          done < <(echo -ne "${{ inputs.build_env }}")
           
           echo "TEST_ENV=hallo" >> "$GITHUB_ENV"
           echo "MASKED_TEST_ENV=hallotest" >> "$GITHUB_ENV"

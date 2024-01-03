@@ -57,7 +57,8 @@ jobs:
       - name: Create environment
         shell: bash
         run: |
-          for input in ${{ inputs.build_env }}; do
+          echo "${{ inputs.build_env }}"
+          for input in "${{ inputs.build_env }}"; do
             echo $input
           done
           

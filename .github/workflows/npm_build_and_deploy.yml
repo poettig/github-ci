@@ -57,7 +57,7 @@ jobs:
       - name: Create environment
         shell: bash
         run: |
-          while IFS= read -r -d'\n' input; do
+          while IFS= read -r input; do
             echo "adsfafa $input"
           done <<< "${{ inputs.build_env }}"
           

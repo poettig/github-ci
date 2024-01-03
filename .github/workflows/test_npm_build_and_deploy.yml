@@ -1,0 +1,7 @@
+name: Test npm_build_and_deploy
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    uses: poettig/github-ci/.github/workflows/npm_build_and_deploy.yml@main

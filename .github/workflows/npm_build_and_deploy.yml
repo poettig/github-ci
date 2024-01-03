@@ -26,7 +26,6 @@ on:
         description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
       build_env:
         type: string
-        default: "{}"
         description: Environment variables passed to the build script as a JSON string.
       source_directory:
         type: string
@@ -54,6 +53,19 @@ jobs:
       - name: Checkout repository to get templates
         uses: actions/checkout@v4
 
+      - name: Create environment
+        shell: bash
+        run: |
+          for input in ${{ inputs.build_env }}; do
+            echo $input
+          done
+          
+          echo "TEST_ENV=hallo" >> "$GITHUB_ENV"
+          echo "MASKED_TEST_ENV=hallo" >> "$GITHUB_ENV"
+          
+          echo "::add-mask::thisvalueismasked"
+          echo "::add-mask::$MASKED_TEST_ENV"
+
       # As action for clean definition and reusability
       - name: Build ${{ github.repository }}
         uses: poettig/github-ci/build_npm@main
@@ -61,7 +73,6 @@ jobs:
           branch: ${{ inputs.branch }}
           node_version: ${{ inputs.node_version }}
           npm_build_script: ${{ inputs.npm_build_script }}
-          build_env: ${{ inputs.build_env }}
 
       # As action to only need the if condition once
       - name: Deploy ${{ github.repository }}

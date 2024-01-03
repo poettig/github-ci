@@ -11,13 +11,17 @@ inputs:
   npm_build_script:
     default: "build"
     description: The name of the npm script to run for building the branch. `npm ci --omit=dev` is run as a previous step. Defaults to `build`.
-  build_env:
-    default: "{}"
-    description: Environment variables passed to the build script as a JSON string.
 
 runs:
   using: "composite"
   steps:
+    - name: Test
+      shell: bash
+      run: |
+        echo $TEST_ENV
+        echo $MASKED_TEST_ENV
+        echo thisvalueismasked
+
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -33,10 +37,8 @@ runs:
       run: |
         npm ci --omit=dev
       shell: bash
-      env: ${{ fromJSON(inputs.build_env) }}
 
     - name: Build
       run: |
         npm run ${{ inputs.npm_build_script }}
       shell: bash
-      env: ${{ fromJSON(inputs.build_env) }}

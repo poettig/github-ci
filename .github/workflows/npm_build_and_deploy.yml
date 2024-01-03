@@ -57,7 +57,6 @@ jobs:
       - name: Create environment
         shell: bash
         run: |
-          echo "${{ inputs.build_env }}"
           IFS='\n' for input in "${{ inputs.build_env }}"; do
             echo $input
           done

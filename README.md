@@ -37,11 +37,9 @@ jobs:
         uses: poettig/github-ci/deploy_npm@main
         if: "${{ vars.TARGET_HOST && vars.TARGET_USER && vars.TARGET_DIRECTORY }}"
         with:
-          source_directory: .
           target_host: ${{ vars.TARGET_HOST }}
           target_user: ${{ vars.TARGET_USER }}
           target_directory: ${{ vars.TARGET_DIRECTORY }}
-          rsync_args: "--delete --exclude=/public/uploads --exclude=.* -rvzci"
           ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
 
       # Only run if all necessary variables exist in the deploy environment

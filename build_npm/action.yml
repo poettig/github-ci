@@ -22,7 +22,7 @@ runs:
           exit 1
         fi
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node_version }}.x
         cache: npm

@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ (github.event.client_payload.branch || github.ref_name) == 'main' && 'production' || ((github.event.client_payload.branch || github.ref_name) == 'development' && 'staging' || '') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.client_payload.branch || github.ref_name }}
 
